@@ -1,0 +1,78 @@
+using System;
+using System.IO;
+
+namespace кубик_рубик
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StreamReader f = new StreamReader("C:\\Users\\shakh\\OneDrive\\Рабочий стол\\я\\33.txt");
+            string l = f.ReadLine();
+            string[] o = l.Split(' ');
+            int n = Convert.ToInt32(o[0]);
+            int m = Convert.ToInt32(o[1]);
+            string s = f.ReadLine();
+            string[] ha = s.Split(' ');
+            int x = Convert.ToInt32(ha[0]);
+            int y = Convert.ToInt32(ha[1]);
+            int z = Convert.ToInt32(ha[2]);
+            for (int i = 0; i < m; i++)
+            {
+                string l2 = f.ReadLine();
+                int p = 0;
+                string[] twist = l2.Split(' ');
+                string A = twist[0];
+                int K = Convert.ToInt32(twist[1]);
+                int S = int.Parse(twist[2]);
+                if (A == "X" && x == K)
+                {
+                    if (S == 1)
+                    {
+                        p = z;
+                        z = n + 1 - y;
+                        y = p;
+                    }
+                    if (S == -1)
+                    {
+                        p = y;
+                        y = n + 1 - z;
+                        z = p;
+                    }
+                }
+                if (A == "Y" && y == K)
+                {
+                    if (S == 1)
+                    {
+                        p = z;
+                        z = n + 1 - x;
+                        x = p;
+                    }
+                    if (S == -1)
+                    {
+                        p = x;
+                        x = n + 1 - z;
+                        z = p;
+
+                    }
+                }
+                if (A == "Z" && z == K)
+                {
+                    if (S == 1)
+                    {
+                        p = y;
+                        y = n + 1 - x;
+                        x = p;
+                    }
+                    if (S == -1)
+                    {
+                        p = x;
+                        x = n + 1 - y;
+                        y = p;
+                    }
+                }
+            }
+            Console.Write(x+"  "+y+"  "+z);
+        }
+    }
+}
