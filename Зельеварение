@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace зельеварение
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StreamReader z = new StreamReader(@"C:\Users\shakh\Downloads\Зельеварение\Зельеварение\input5.txt");
+            string str = z.ReadLine();
+            List<string> list = new List<string>();
+            while (str != null)
+            {
+                string[] a = str.Split(' ');
+                string result = "";
+                for (int i = 1; i < a.Length; i++)
+                {
+                    try
+                    {
+                        int num = Convert.ToInt32(a[i]);
+                        result += list[num - 1];
+
+                    }
+                    catch
+                    {
+                        result += a[i];
+                    }
+                }
+                switch (a[0])
+                {
+                    case "DUST":
+                        result = "DT" + result;
+                        result += "TD";
+                        break;
+                    case "WATER":
+                        result = "WT" + result;
+                        result += "TW";
+                        break;
+                    case "MIX":
+                        result = "MX" + result;
+                        result += "XM";
+                        break;
+                    default:
+                        result = "FR" + result;
+                        result += "RF";
+                        break;
+                }
+                list.Add(result);
+                str = z.ReadLine();
+                if (str == null)
+                {
+                    StreamReader z2 = new StreamReader(@"C:\Users\shakh\Downloads\Зельеварение\Зельеварение\output5.txt");
+                    string str2 = z2.ReadLine();
+                    Console.WriteLine(result);
+                    Console.WriteLine(str2);
+                }
+            }
+            Console.Read();
+        }
+    }
+}
