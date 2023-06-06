@@ -1,0 +1,115 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Обмен_денег
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var cish = new List<int>();
+            var fail_A = new List<int>();
+            var con = new List<int>();
+            var fail_B = new List<int>();
+            var a = new List<int>();
+            StreamReader f = new StreamReader("C:\\Users\\shakh\\Downloads\\Обмен денег\\Обмен денег\\input4.txt");
+            string s = f.ReadLine();
+            int nish = Convert.ToInt32(s.Split()[0]);
+            for (int i = 1; i < nish; i++)
+            {
+                cish.Add(Convert.ToInt32(s.Split()[i]));
+            }
+            s = f.ReadLine();
+            int kish = Convert.ToInt32(s.Split()[0]);
+            for (int i = 0; i < kish; i++)
+            {
+                fail_A.Add(Convert.ToInt32(s.Split()[i + 1]));
+            }
+            s = f.ReadLine();
+            int ncon = Convert.ToInt32(s.Split()[0]);
+            for (int i = 1; i < ncon; i++)
+            {
+                con.Add(Convert.ToInt32(s.Split()[i]));
+            }
+            s = f.ReadLine();
+            int kcon = Convert.ToInt32(s.Split()[0]);
+            for (int i = 0; i < kcon; i++)
+            {
+                fail_B.Add(Convert.ToInt32(s.Split()[i]));
+            }
+            s = f.ReadLine();
+            for (int i = 0; i < nish; i++)
+            {
+                a.Add(Convert.ToInt32(s.Split()[i]));
+            }
+
+            fail_A.Sort();
+            fail_A.Reverse();
+            fail_B.Sort();
+
+            for (int i = 0; i < a.Count - 1; i++)
+            {
+                for (int j = 0; j < fail_A.Count - 1; j++)
+                {
+                    if (a[i] >= fail_A[j])
+                    {
+                        a[i] -= 1;
+                    }
+                }
+            }
+
+            var val = new List<int>(a);
+            for (int i = 0; i < val.Count - 1; i++)
+            {
+                for (int j = i + 1; j < cish.Count - 1; i++)
+                {
+                    val[i] *= cish[j];
+                }
+            }
+            int sval = 0;
+            string b = " ";
+            foreach (var i in val)
+            {
+                b += Convert.ToString(i);
+            }
+            sval = Convert.ToInt32(b);
+
+            var newval = new List<int>();
+            var c = new List<int>();
+
+            for (int i = con.Count; i > 0; i--)
+            {
+                newval.Add(sval % con[i - 1]);
+                sval = sval / con[i - 1];
+                if (i == 1)
+                {
+                    newval.Add(sval);
+                }
+            }
+            newval.Sort();
+            newval.Reverse();
+            foreach (int i in newval)
+            {
+                c.Add(i);
+            }
+
+            for (int i = 0; i < c.Count - 1; i++)
+            {
+                for (int j = 0; j < fail_B.Count - 1; j++)
+                {
+                    if (c[i] >= fail_B[j])
+                    {
+                        c[i] += 1;
+                    }
+                }
+            }
+
+            foreach (int i in c)
+            {
+                Console.WriteLine(i);
+            }
+            f.Close();
+        }
+    }
+}
