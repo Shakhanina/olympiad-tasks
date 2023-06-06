@@ -1,0 +1,103 @@
+def find(tree,start,end):
+  startpath = []
+  endpath = []
+  path = 0
+  b = 0 
+  if start == [0]:
+      for j in range(len(end) -1, 0, -1):
+        endpath.append(end[j])
+  for i in range(1,min(len(start),len(end))):
+    if start[i] != end[i] :
+      for j in range(len(start) -1, i-1, -1):
+        startpath.append(start[j])
+      for j in range(len(end)-1, i-1, -1):
+        endpath.append(end[j])
+      break
+    elif i == len(start) - 1:
+      for j in range(len(end)-1, i-1, -1):
+        endpath.append(end[j])
+      break
+    elif i == len(end)-1:
+      for j in range(len(start)-1, i-1, -1):
+        startpath.append(start[j])
+      break
+
+  while(b < max(len(startpath), len(endpath))):
+    if b < len(startpath):
+      path += tree[startpath[b]][0]
+    if b < len(endpath):
+      path += tree[endpath[b]][0]
+    b += 1
+  
+  return path
+def chooseend(tree,start,apples):
+  wae = find(tree,start,apples[0])
+  ind = 0
+  c = 0
+  for i in apples:
+    if wae < find(tree,start,i):
+      wae = find(tree,start,i)
+      ind = c
+    c += 1
+  return apples[ind]
+def choosestart(tree,start,apples):
+  wae = find(tree,start,apples[0])
+  ind = 0
+  c = 0
+  for i in apples:
+    if wae > find(tree,start,i):
+      wae = find(tree,start,i)
+      ind = c
+    c += 1
+  
+  return apples[ind]
+
+def chooseapple (start,apples,end):
+  ind = 0
+  prior = 0
+  for j in range(len(apples)):
+    if apples[j] != end:
+      for i in range(1,min(len(start),len(apples[j]))):
+        if i == len(start) - 1 and start[i] == apples[j][i]:
+          if len(apples[j]) > prior:
+            prior = len(apples[j])
+            ind = j
+        elif start[i] != apples[j][i]:
+          if i > prior:
+            prior = i
+            ind = j
+  return apples[ind]
+f = open("C:\\Users\\shakh\\Downloads\\Не съем, так надкушу\\Не съем, так надкушу\\input_s1_07.txt",'r')
+branches = [[0]]
+path = 0
+apples = []
+sort = []
+a = f.readline().split(' ')
+for i in range(int(a[0])):
+  b=f.readline().split(' ')
+  branches.append([int(b[1])])
+  for k in range(1,len(branches[int(b[0])])):
+    branches[-1].append(branches[int(b[0])][k])
+  branches[-1].append(len(branches) - 1)
+  
+for i in range(int(a[1])):
+  b = f.readline().split(' ')
+  apples.append(branches[int(b[0])])
+  sort.append(int(b[1]))
+  
+b = f.readline().split(' ')
+start = branches[int(b[0])]
+for i in range(len(sort)):
+  if sort[i]<int(b[1]):
+    apples[i] = []
+while([] in apples):
+  apples.remove([])
+
+end = chooseend(branches,start,apples)   
+while len(apples) != 0:
+  path += find(branches,start,chooseapple(start,apples,end))
+  au = chooseapple(start,apples,end)
+  start = au
+  apples.remove(au)
+path += find(branches,start,end)
+print(path)
